@@ -1,7 +1,7 @@
 package io.aquilesdias.mscartoes.application;
 
 import io.aquilesdias.mscartoes.domain.Cartao;
-import io.aquilesdias.mscartoes.infra.CartaoRepository;
+import io.aquilesdias.mscartoes.infra.repository.CartaoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
