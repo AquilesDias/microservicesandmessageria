@@ -2,10 +2,10 @@ package io.aquilesdias.msavaliadorcredito.application;
 
 import io.aquilesdias.msavaliadorcredito.application.exception.DadosClienteException;
 import io.aquilesdias.msavaliadorcredito.application.exception.ErroComunicacaoMicroservicesException;
-import io.aquilesdias.msavaliadorcredito.domain.model.DadosAvaliacao;
-import io.aquilesdias.msavaliadorcredito.domain.model.RetornoAvaliacaoCliente;
-import io.aquilesdias.msavaliadorcredito.domain.model.SituacaoCliente;
+import io.aquilesdias.msavaliadorcredito.application.exception.ErroSolicitacaoCartaoException;
+import io.aquilesdias.msavaliadorcredito.domain.model.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +50,19 @@ public class AvaliadorCreditoController {
         } catch (ErroComunicacaoMicroservicesException e) {
             return ResponseEntity.status(HttpStatus.resolve(e.getStatus())).body(e.getMessage());
         }
+    }
 
+    @PostMapping("solicitacoes-cartao")
+    public ResponseEntity solicitarCartao(@RequestBody DadosSolicitacaoEmissaoCartao dados){
+
+        try{
+            ProtocoloSolicitacaoCartao protocoloSolicitacaoCartao = avalidadorCreditoService
+                    .solicitacaoEmissaoCartao(dados);
+            return ResponseEntity.ok(protocoloSolicitacaoCartao);
+
+        } catch (ErroSolicitacaoCartaoException e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
 }
